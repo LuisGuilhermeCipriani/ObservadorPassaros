@@ -1,10 +1,12 @@
 package br.ufjf.dcc196.luisguilhermecipriani.observador;
 
 import android.content.Context;
+import android.net.sip.SipSession;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +16,11 @@ import java.util.List;
 
 public class AvistamentoAdapter extends RecyclerView.Adapter<AvistamentoAdapter.AvistamentoViewHolder> {
     private final List<Avistamento> avistamentos;
+    private OnAvistamentoClickListener listener;
 
-    public AvistamentoAdapter(List<Avistamento> avistamentos) {
+    public AvistamentoAdapter(List<Avistamento> avistamentos, OnAvistamentoClickListener listener) {
         this.avistamentos = avistamentos;
+        this.listener = listener;
     }
 
     @NonNull
@@ -45,11 +49,21 @@ public class AvistamentoAdapter extends RecyclerView.Adapter<AvistamentoAdapter.
         private TextView textViewNome;
         private TextView textViewEspecie;
         private TextView textViewAvistamentos;
-        public AvistamentoViewHolder(@NonNull View itemView) {
+        public AvistamentoViewHolder(@NonNull final View itemView) {
             super(itemView);
             textViewNome = itemView.findViewById(R.id.textViewNome);
             textViewEspecie = itemView.findViewById(R.id.textViewEspecie);
             textViewAvistamentos= itemView.findViewById(R.id.textViewAvistamentos);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onAvistamentoClick(itemView, getAdapterPosition());
+                }
+            });
         }
+    }
+
+    public interface OnAvistamentoClickListener{
+        void onAvistamentoClick(View source, int position);
     }
 }

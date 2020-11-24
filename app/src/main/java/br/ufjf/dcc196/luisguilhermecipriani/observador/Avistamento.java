@@ -34,4 +34,8 @@ public class Avistamento {
     public void setAvistamentos(Integer avistamentos) {
         this.avistamentos = avistamentos;
     }
+
+    public void incrementa() {
+        this.avistamentos++;
+    }
 }
