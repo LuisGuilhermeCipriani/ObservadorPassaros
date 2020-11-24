@@ -1,6 +1,7 @@
 package br.ufjf.dcc196.luisguilhermecipriani.observador;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerViewAvistamentos;
-    List<Avistamento> avistamentos;
+    private RecyclerView recyclerViewAvistamentos;
+    private List<Avistamento> avistamentos;
+    private LinearLayoutManager layoutManager;
+    private AvistamentoAdapter avistamentoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +26,9 @@ public class MainActivity extends AppCompatActivity {
         }};
 
         recyclerViewAvistamentos = findViewById(R.id.recyclerViewAvistamentos);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerViewAvistamentos.setLayoutManager(layoutManager);
+        avistamentoAdapter = new AvistamentoAdapter(avistamentos);
+        recyclerViewAvistamentos.setAdapter(avistamentoAdapter);
     }
 }
