@@ -1,6 +1,8 @@
 package br.ufjf.dcc196.luisguilhermecipriani.observador;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements AvistamentoAdapte
     private List<Avistamento> avistamentos;
     private LinearLayoutManager layoutManager;
     private AvistamentoAdapter avistamentoAdapter;
+    private ItemTouchHelper.SimpleCallback touchHelperCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,21 @@ public class MainActivity extends AppCompatActivity implements AvistamentoAdapte
         recyclerViewAvistamentos.setLayoutManager(layoutManager);
         avistamentoAdapter = new AvistamentoAdapter(avistamentos, this);
         recyclerViewAvistamentos.setAdapter(avistamentoAdapter);
+
+        touchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                avistamentos.remove(viewHolder.getAdapterPosition());
+                avistamentoAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            }
+        };
+
+        new ItemTouchHelper(touchHelperCallback).attachToRecyclerView(recyclerViewAvistamentos);
     }
 
     @Override
